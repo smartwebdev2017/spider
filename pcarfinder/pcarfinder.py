@@ -3,7 +3,7 @@ import mysql.connector
 
 class PcarfinderDB():
     def __init__(self):
-        self.conn = mysql.connector.connect(user='root', password='root', db='pfinder', host='localhost', charset='utf8', use_unicode=True)
+        self.conn = mysql.connector.connect(user='dev', password='pfinder', db='pfinder', host='35.192.81.142', charset='utf8', use_unicode=True)
         self.cursor = self.conn.cursor()
 
     def check_vin_in_db(self, vin_code):
