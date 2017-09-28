@@ -9,7 +9,7 @@ from scrapy.http import Request
 import csv
 import re
 import datetime
-from dateutil.parser import parse
+
 class RennlistSpider(BaseProductsSpider):
     handle_httpstatus_list = [524]
 
