@@ -59,3 +59,56 @@ class PcarfinderDB():
         except Exception as e:
             print(e)
             self.conn.rollback()
+
+    def insert_temp_data(self, vin_id, code, value):
+        sql = "INSERT INTO temp (vin_id, code, value) values (%s, '%s', '%s') " % (vin_id, code, value)
+
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            print('%s is added successfully' %(vin_id))
+        except Exception as e:
+            print(e)
+            self.conn.rollback()
+
+    def insert_bsf(self, vin_id, msrp, warranty_start, model_year, model_detail, color, production_month, interior):
+        sql = "INSERT INTO api_bsf (vin, msrp, warranty_start, model_year, model_detail, color, production_month, interior) " \
+              " values ('%s', %s, '%s', %s, '%s', '%s', '%s', '%s') " % (vin_id, msrp, warranty_start, model_year, model_detail, color, production_month, interior)
+
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            print('%s is added successfully' %(vin_id))
+            id = self.cursor.lastrowid
+            return id
+        except Exception as e:
+            print(e)
+            self.conn.rollback()
+
+    def insert_bsf_options(self, bsf_id, code, value):
+        sql = "INSERT INTO api_bsf_options (bsf_id, code, value) values (%s, '%s', '%s') " % (bsf_id, code, value)
+
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            print('%s is added successfully' %(bsf_id))
+        except Exception as e:
+            print(e)
+            self.conn.rollback()
+
+    def updateBsfById(self, id, warranty_start, production_month, color, interior):
+        sql = "UPDATE api_bsf SET warranty_start = '%s', production_month = '%s', color = '%s', interior='%s' WHERE id = %s " % (warranty_start, production_month, color, interior, id)
+
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            print("%s is updated successfully" % id)
+        except Exception as e:
+            print(e)
+            self.conn.rollback()
+
+    def getOptionsByBsfId(self, bsf_id):
+        sql = "SELECT * FROM temp WHERE vin_id = '%s' " % (bsf_id)
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        return result

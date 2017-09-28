@@ -20,7 +20,6 @@ import urllib2
 import csv
 import re
 import datetime
-from dateutil.parser import parse
 
 class CustomClientContextFactory(ScrapyClientContextFactory):
     def getContext(self, hostname=None, port=None):
@@ -180,7 +179,7 @@ class CarMaxSpinder(BaseProductsSpider):
 
         if site is not None:
             if vin is None:
-                self.db.insert(site[0], info['Vin'].upper(), info['Make'], info['Model'], info['Trim'], model_detail, info['Year'], info['Mileage'], city, state, cur_str, info['Price'], 'Used', 'Dealership', 'https://www.carmax.com/car/' + str(info['StockNumber']) + '/vehicle-history', info['ExteriorColor'], info['InteriorColor'], transmission, '', info['Description'], product.get('url'), info['Size'], description,  isSold, cur_str, '', info['DriveTrain'], datetime.datetime.now(), '')
+                self.db.insert_car(site[0], info['Vin'].upper(), info['Make'], info['Model'], info['Trim'], model_detail, info['Year'], info['Mileage'], city, state, cur_str, info['Price'], 'Used', 'Dealership', 'https://www.carmax.com/car/' + str(info['StockNumber']) + '/vehicle-history', info['ExteriorColor'], info['InteriorColor'], transmission, '', info['Description'], product.get('url'), info['Size'], description,  isSold, cur_str, '', info['DriveTrain'], datetime.datetime.now(), '')
             else:
                 self.db.update_car(info['Vin'].upper(), info['Make'], info['Model'], info['Trim'], model_detail, info['Year'], info['Mileage'], city, state, cur_str, info['Price'], 'Used', 'Dealership', 'https://www.carmax.com/car/' + str(info['StockNumber']) + '/vehicle-history', info['ExteriorColor'], info['InteriorColor'], transmission, '', info['Description'], product.get('url'), info['Size'], description,  isSold, cur_str, '', info['DriveTrain'], datetime.datetime.now())
 
