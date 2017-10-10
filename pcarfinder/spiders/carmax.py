@@ -179,7 +179,13 @@ class CarMaxSpinder(BaseProductsSpider):
 
         if site is not None:
             if vin is None:
-                self.db.insert_car(site[0], info['Vin'].upper(), info['Make'], info['Model'], info['Trim'], model_detail, info['Year'], info['Mileage'], city, state, cur_str, info['Price'], 'Used', 'Dealership', 'https://www.carmax.com/car/' + str(info['StockNumber']) + '/vehicle-history', info['ExteriorColor'], info['InteriorColor'], transmission, '', info['Description'], product.get('url'), info['Size'], description,  isSold, cur_str, '', info['DriveTrain'], datetime.datetime.now(), '')
+                bsf_data = self.db.getBSinfo(info['Vin'])
+                bsf_id = self.db.insert_bsf(info['Vin'], bsf_data['msrp'], bsf_data['warranty_start'], bsf_data['model_year'], bsf_data['model_detail'], bsf_data['color'], bsf_data['production_month'], bsf_data['interior'])
+                for option in bsf_data['options']:
+                    self.db.insert_bsf_options(bsf_id, option['code'], option['value'])
+
+                self.db.insert_car(site[0], info['Vin'].upper(), info['Make'], info['Model'], info['Trim'], model_detail, info['Year'], info['Mileage'], city, state, cur_str, info['Price'], 'Used', 'Dealership', 'https://www.carmax.com/car/' + str(info['StockNumber']) + '/vehicle-history', info['ExteriorColor'], info['InteriorColor'], transmission, '', info['Description'], product.get('url'), info['Size'], description,  isSold, cur_str, '', info['DriveTrain'], datetime.datetime.now(), '', bsf_id)
+
             else:
                 self.db.update_car(info['Vin'].upper(), info['Make'], info['Model'], info['Trim'], model_detail, info['Year'], info['Mileage'], city, state, cur_str, info['Price'], 'Used', 'Dealership', 'https://www.carmax.com/car/' + str(info['StockNumber']) + '/vehicle-history', info['ExteriorColor'], info['InteriorColor'], transmission, '', info['Description'], product.get('url'), info['Size'], description,  isSold, cur_str, '', info['DriveTrain'], datetime.datetime.now())
 
